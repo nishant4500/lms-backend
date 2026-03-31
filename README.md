@@ -22,8 +22,9 @@ It allows users to register, login, and manage courses.
 ### 1. Clone the repository
 
 ```bash
-git clone <your-repo-link>
+git clone https://github.com/nishant4500/lms-backend.git
 cd lms-backend
+
 ```
 
 ### 2. Create virtual environment
