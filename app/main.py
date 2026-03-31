@@ -14,6 +14,11 @@ app = FastAPI()
 def root():
     return {"message": "LMS running"}
 
-app.include_router(auth.router)
+from app.routes import modules, enrollments, assignments, progress
 
+app.include_router(auth.router)
 app.include_router(courses.router)
+app.include_router(modules.router)
+app.include_router(enrollments.router)
+app.include_router(assignments.router)
+app.include_router(progress.router)
