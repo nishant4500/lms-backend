@@ -4,6 +4,7 @@ from app.database import SessionLocal
 from app import models, schemas
 from app.security import get_password_hash, verify_password, create_access_token
 from datetime import timedelta
+from fastapi import HTTPException
 
 router = APIRouter(tags=["auth"])
 
@@ -18,6 +19,18 @@ def get_db():
 
 @router.post("/register")
 def register(user: schemas.UserCreate, db: Session = Depends(get_db)):
+    if not user.email:
+        raise HTTPException(status_code=400, detail="Email required")
+
+    if not user.password:
+        raise HTTPException(status_code=400, detail="Password required")
+
+    if not user.name:
+        raise HTTPException(status_code=400, detail="Name required")
+
+    if not user.role:
+        raise HTTPException(status_code=400, detail="Role required")
+    
     db_user = db.query(models.User).filter(models.User.email == user.email).first()
     if db_user:
         raise HTTPException(status_code=400, detail="Email already registered")
@@ -36,6 +49,12 @@ def register(user: schemas.UserCreate, db: Session = Depends(get_db)):
 
 @router.post("/login")
 def login(user: schemas.UserLogin, db: Session = Depends(get_db)):
+    if not user.email:
+        raise HTTPException(status_code=400, detail="Email required")
+
+    if not user.password:
+        raise HTTPException(status_code=400, detail="Password required")
+    
     db_user = db.query(models.User).filter(models.User.email == user.email).first()
 
     if not db_user or not verify_password(user.password, db_user.password):

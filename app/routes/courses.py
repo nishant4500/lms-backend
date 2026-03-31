@@ -10,6 +10,8 @@ router = APIRouter(tags=["courses"])
 # CREATE
 @router.post("/courses")
 def create_course(course: schemas.CourseCreate, db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
+    if not course.title:
+        raise HTTPException(status_code=400, detail="Title required")
     if current_user.role != "instructor":
         raise HTTPException(status_code=403, detail="Only instructors can create courses")
     return crud.create_course(db, course, current_user.id)
