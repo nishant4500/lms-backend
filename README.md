@@ -64,10 +64,6 @@ uvicorn app.main:app --reload
 
 ---
 
-```
-Bearer <your_token>
-```
-
 ---
 
 ## 📂 Project Structure
